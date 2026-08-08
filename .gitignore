@@ -42,8 +42,11 @@ app.*.map.json
 **/linux/flutter/ephemeral/
 **/windows/flutter/ephemeral/
 
-# ── Node (any web tooling) ──
+# ── Node / Next.js (web tooling) ──
 node_modules/
+**/.next/
+**/out/
+**/next-env.d.ts
 
 # ── Secrets (none present; keep out by default) ──
 .env

@@ -1,0 +1,38 @@
+{
+  "name": "Atelier — Gestion de réparation",
+  "short_name": "Atelier",
+  "description": "Gestion complète d'atelier de réparation électronique & smartphone.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f2f2f7",
+  "theme_color": "#4f46e5",
+  "lang": "fr",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nouveau ticket",
+      "short_name": "Ticket",
+      "url": "/tickets/nouveau"
+    },
+    {
+      "name": "Stock",
+      "url": "/stock"
+    }
+  ]
+}
