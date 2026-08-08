@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell($env:Path = \"C:\\\\src\\\\flutter\\\\bin;\" + $env:Path; Set-Location C:\\\\Users\\\\Shade\\\\Desktop\\\\reparation\\\\atelier_reparation; flutter analyze lib/shared/widgets/apple/apple_chart.dart lib/shared/widgets/staggered.dart 2>&1 | Select-Object -Last 12)",
+      "PowerShell($env:Path = \"C:\\\\src\\\\flutter\\\\bin;\" + $env:Path; Set-Location C:\\\\Users\\\\Shade\\\\Desktop\\\\reparation\\\\atelier_reparation; flutter test 2>&1 | Select-Object -Last 6; \"=== BUILD ===\"; flutter build web --release 2>&1 | Select-Object -Last 4)",
+      "PowerShell($env:Path = \"C:\\\\src\\\\flutter\\\\bin;\" + $env:Path; Set-Location C:\\\\Users\\\\Shade\\\\Desktop\\\\reparation\\\\atelier_reparation; flutter test 2>&1 | Select-Object -Last 8)"
+    ]
+  }
+}

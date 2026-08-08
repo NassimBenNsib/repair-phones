@@ -1,0 +1,156 @@
+# Taskfile — handy commands for atelier_reparation (Flutter).
+# Runner: go-task  →  https://taskfile.dev
+#
+# Usage:   task <name>              e.g. `task run`, `task check`, `task exe`
+#          task run DEVICE=chrome   run on another target (chrome / edge / <id>)
+#          task --list              show every task with its description
+#
+# Flutter is auto-detected: if `flutter` is on PATH it's used as-is; otherwise
+# the SDK is located from common install folders (C:\src\flutter, %LOCALAPPDATA%,
+# %USERPROFILE%\flutter, C:\flutter) and prepended for that command only —
+# nothing is written to your PATH. Run tasks from this folder.
+version: '3'
+
+vars:
+  # Wrapper: PowerShell with the Flutter SDK detected per-command.
+  RUN: 'powershell -NoProfile -ExecutionPolicy Bypass -Command'
+  ENV: 'if (-not (Get-Command flutter -ErrorAction SilentlyContinue)) { foreach ($p in @("C:/src/flutter/bin", "$env:LOCALAPPDATA/flutter/bin", "$env:USERPROFILE/flutter/bin", "C:/flutter/bin")) { if (Test-Path (Join-Path $p "flutter.bat")) { $env:Path = "$p;" + $env:Path; break } } };'
+  # Default run target — override on the CLI, e.g. `task run DEVICE=chrome`.
+  DEVICE: windows
+
+tasks:
+  default:
+    desc: Show the command menu
+    silent: true
+    cmds:
+      - 'echo atelier_reparation — run "task --list" for all tasks. Common: run | web | check | verify | exe'
+
+  # --- Dependencies & codegen ---------------------------------------------
+  setup:
+    desc: Install dependencies (pub get)
+    aliases: [deps, pub]
+    cmds:
+      - "{{.RUN}} '{{.ENV}} flutter pub get'"
+
+  l10n:
+    desc: Regenerate localizations (FR/EN/AR/ES)
+    aliases: [gen, i18n]
+    cmds:
+      - "{{.RUN}} '{{.ENV}} flutter gen-l10n'"
+
+  # --- Run ------------------------------------------------------------------
+  run:
+    desc: 'Run on a device (default: windows). Override: task run DEVICE=chrome'
+    aliases: [win, windows, dev]
+    interactive: true
+    cmds:
+      - "{{.RUN}} '{{.ENV}} flutter run -d {{.DEVICE}}'"
+
+  web:
+    desc: Run in Chrome
+    aliases: [chrome]
+    interactive: true
+    cmds:
+      - "{{.RUN}} '{{.ENV}} flutter run -d chrome'"
+
+  # --- Quality gates --------------------------------------------------------
+  analyze:
+    desc: Static analysis
+    aliases: [lint]
+    cmds:
+      - "{{.RUN}} '{{.ENV}} flutter analyze'"
+
+  test:
+    desc: Run unit & widget tests
+    cmds:
+      - "{{.RUN}} '{{.ENV}} flutter test'"
+
+  fmt:
+    desc: Format all Dart code
+    aliases: [format]
+    cmds:
+      - "{{.RUN}} '{{.ENV}} dart format lib test'"
+
+  check:
+    desc: Fast gate — analyze + test
+    cmds:
+      - task: analyze
+      - task: test
+
+  verify:
+    desc: Full gate — analyze + test + release web build
+    cmds:
+      - task: analyze
+      - task: test
+      - task: build-web
+
+  # --- Builds ---------------------------------------------------------------
+  build-web:
+    desc: Release web build (build/web)
+    aliases: [bw]
+    cmds:
+      - "{{.RUN}} '{{.ENV}} flutter build web --release'"
+
+  build-win:
+    desc: 'Release Windows build → build/windows/x64/runner/Release/ (host: Windows)'
+    aliases: [exe, bwin]
+    cmds:
+      - "{{.RUN}} '{{.ENV}} flutter build windows --release'"
+      - 'echo Built: build/windows/x64/runner/Release/atelier_reparation.exe'
+
+  build-apk:
+    desc: 'Release Android APK → build/app/outputs/… (needs Android SDK)'
+    aliases: [apk, android]
+    cmds:
+      - "{{.RUN}} '{{.ENV}} flutter build apk --release'"
+
+  build-aab:
+    desc: 'Release Android App Bundle (Play Store) (needs Android SDK)'
+    aliases: [aab, bundle]
+    cmds:
+      - "{{.RUN}} '{{.ENV}} flutter build appbundle --release'"
+
+  build-ios:
+    desc: 'Release iOS build — HOST: macOS + Xcode only'
+    aliases: [ios]
+    cmds:
+      - "{{.RUN}} '{{.ENV}} flutter build ipa --release'"
+
+  build-macos:
+    desc: 'Release macOS build — HOST: macOS only'
+    aliases: [macos]
+    cmds:
+      - "{{.RUN}} '{{.ENV}} flutter build macos --release'"
+
+  build-linux:
+    desc: 'Release Linux build — HOST: Linux only'
+    aliases: [linux]
+    cmds:
+      - "{{.RUN}} '{{.ENV}} flutter build linux --release'"
+
+  # --- Maintenance ----------------------------------------------------------
+  clean:
+    desc: Remove build artifacts
+    cmds:
+      - "{{.RUN}} '{{.ENV}} flutter clean'"
+
+  reset:
+    desc: Clean then reinstall dependencies
+    cmds:
+      - task: clean
+      - task: setup
+
+  doctor:
+    desc: Flutter environment diagnostics
+    cmds:
+      - "{{.RUN}} '{{.ENV}} flutter doctor'"
+
+  outdated:
+    desc: List outdated dependencies
+    cmds:
+      - "{{.RUN}} '{{.ENV}} flutter pub outdated'"
+
+  devices:
+    desc: List run targets (windows / chrome / edge)
+    cmds:
+      - "{{.RUN}} '{{.ENV}} flutter devices'"

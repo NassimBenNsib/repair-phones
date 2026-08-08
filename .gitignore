@@ -1,0 +1,60 @@
+# ── Flutter / Dart build artifacts (regenerable) ──────────────────────────
+**/build/
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/.pub-cache/
+**/.pub/
+**/generated_plugin_registrant.*
+**/doc/api/
+
+# Per-platform EPHEMERAL Flutter engine artifacts — large binaries incl *.pdb
+# (this is where the 264 MB flutter_windows.dll.pdb + kernel blobs live)
+**/flutter/ephemeral/
+**/Flutter/ephemeral/
+**/ephemeral/
+*.pdb
+*.symbols
+app.*.symbols
+app.*.map.json
+
+# ── Android ──
+**/android/.gradle/
+**/android/captures/
+**/android/local.properties
+**/android/key.properties
+**/*.jks
+**/*.keystore
+
+# ── iOS / macOS ──
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/flutter_export_environment.sh
+**/macos/Pods/
+**/xcuserdata/
+**/*.mode1v3
+**/*.mode2v3
+
+# ── Linux / Windows desktop build ──
+**/linux/flutter/ephemeral/
+**/windows/flutter/ephemeral/
+
+# ── Node (any web tooling) ──
+node_modules/
+
+# ── Secrets (none present; keep out by default) ──
+.env
+.env.*
+!.env.example
+
+# ── IDE / OS ──
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
+*.swp
